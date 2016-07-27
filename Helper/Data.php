@@ -30,6 +30,7 @@ namespace Nosto\Tagging\Helper;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\AppInterface;
 use Magento\Framework\Module\ModuleListInterface;
 use Magento\Store\Model\Store;
@@ -66,6 +67,11 @@ class Data extends AbstractHelper
     protected $_configWriter;
 
     /**
+     * @var ProductMetadataInterface $_productMetaData.
+     */
+    protected $_productMetaData;
+
+    /**
      * Constructor.
      *
      * @param Context $context the context.
@@ -77,13 +83,15 @@ class Data extends AbstractHelper
         Context $context,
         StoreManagerInterface $storeManager,
         ModuleListInterface $moduleListing,
-        WriterInterface $configWriter
+        WriterInterface $configWriter,
+        ProductMetadataInterface $productMetadataInterface
     ) {
         parent::__construct($context);
 
         $this->_storeManager = $storeManager;
         $this->_moduleListing = $moduleListing;
         $this->_configWriter = $configWriter;
+        $this->_productMetaData = $productMetadataInterface;
     }
 
     /**
@@ -159,6 +167,12 @@ class Data extends AbstractHelper
      */
     public function getPlatformVersion()
     {
-        return AppInterface::VERSION;
+        $version = 'unknown';
+        if ($this->_productMetaData->getVersion()) {
+            $version = $this->_productMetaData->getVersion();
+        } elseif (defined(AppInterface::VERSION)) {
+            $version = AppInterface::VERSION;
+        }
+        return $version;
     }
 }

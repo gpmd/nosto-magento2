@@ -47,6 +47,11 @@ class Iframe extends BlockTemplate
     const DEFAULT_IFRAME_ORIGIN_REGEXP = '(https:\/\/(.*)\.hub\.nosto\.com)|(https:\/\/my\.nosto\.com)';
 
     /**
+     * Platform UI version
+     */
+    const IFRAME_VERSION = 1;
+
+    /**
      * @inheritdoc
      */
     protected $_template = 'iframe.phtml';
@@ -88,8 +93,6 @@ class Iframe extends BlockTemplate
      */
     public function getIframeUrl()
     {
-        $params = array();
-
         // Pass any error/success messages we might have to the iframe.
         // These can be available when getting redirect back from the OAuth
         // front controller after connecting a Nosto account to a store.
@@ -102,7 +105,7 @@ class Iframe extends BlockTemplate
             }
             $this->_backendAuthSession->setData('nosto_message', null);
         }
-
+        $params['v'] = self::IFRAME_VERSION;
         $store = $this->getSelectedStore();
         $account = $this->_accountHelper->findAccount($store);
         return $this->_accountHelper->getIframeUrl($store, $account, $params);

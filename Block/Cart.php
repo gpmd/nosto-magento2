@@ -97,7 +97,6 @@ class Cart extends CartBlock
         CartHelper $cartHelper,
         HttpContext $httpContext,
         CartBuilder $cartBuilder,
-        FormatHelper $formatHelper,
         CustomerFactory $customerFactory,
         array $data = []
     ) {
@@ -112,7 +111,6 @@ class Cart extends CartBlock
         );
 
         $this->_cartBuilder = $cartBuilder;
-        $this->_formatHelper = $formatHelper;
         $this->_customerFactory = $customerFactory;
         $this->_cookieManager = $cookieManager;
 
@@ -170,6 +168,7 @@ class Cart extends CartBlock
      */
     public function formatNostoPrice(\NostoPrice $price)
     {
+        // ToDo - format the price
         return $this->_formatHelper->formatPrice($price);
     }
 }

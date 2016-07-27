@@ -51,11 +51,17 @@ define([
         if (typeof data === 'object' && data.type) {
             switch (data.type) {
                 case TYPE_NEW_ACCOUNT:
+                    var post_data = {email: data.params.email};
+                    if (data.params.details) {
+                        post_data.details = JSON.stringify(data.params.details);
+                    }
+                    console.log('Params', post_data, 'URL: ', settings.urls.createAccount);
+                    return;
                     $.ajax({
                         url: settings.urls.createAccount,
                         type: 'POST',
                         dataType: 'json',
-                        data: $.extend(settings.xhrParams, {email: data.params.email}),
+                        data: $.extend(settings.xhrParams, post_data),
                         showLoader: false
                     }).done(function (response) {
                         if (response.redirect_url) {

@@ -107,7 +107,7 @@ class Account extends AbstractHelper
         $accountName = $store->getConfig(self::XML_PATH_ACCOUNT);
 
         if (!empty($accountName)) {
-            $account = new \NostoAccount($accountName);
+            $account = new \NostoConfiguration($accountName);
             $tokens = json_decode(
                 $store->getConfig(self::XML_PATH_TOKENS),
                 true
